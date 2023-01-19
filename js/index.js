@@ -7,16 +7,17 @@ function updateSubtotal(product) {
   const price = product.querySelector('.price span');
   const quantity = product.querySelector('.quantity input');
   // Step 2
-  const priceValue = price.innerHTML;
-  const quantityValue = quantity.value;
+  const priceValue = Number(price.innerHTML); // mine -> price.innerHTML;
+  const quantityValue = Number(quantity.value); // mine -> quantity.value;
+
   // Step 3
   const subtotalPrice = priceValue * quantityValue;
   // Step 4
   let subtotalItself = product.querySelector('.subtotal span');
-  subtotalItself.innerHTML = '';
+  subtotalItself.innerHTML = subtotalPrice; // mine -> subtotalItself.innerHTML = '';
   // Step 5
-  subtotalItself.append(subtotalPrice);
-  return subtotalItself;
+  // mine -> subtotalItself.append(subtotalPrice);
+  return subtotalPrice; // mine -> subtotalItself;
 }
 
 function calculateAll() {
@@ -25,24 +26,37 @@ function calculateAll() {
   // const singleProduct = document.querySelector('.product');
   // updateSubtotal(singleProduct);
   // end of test
+  const singleProduct = document.querySelector('.product');
+  updateSubtotal(singleProduct);
 
   // ITERATION 2
   //... your code goes here
-  const everyProduct = product.getElementsByClassName('product');
+  let priceEachProduct = 0;
+  const productElements = document.querySelectorAll('product');
   // shall I set the subtotal back to 0, before goin on?
-
-  // loop over array of .product properties, passing in updateSubtotal function
-  for (const item of everyProduct) {
-    updateSubtotal(item);
-    return item;
+  for (let productElement of productElements) {
+    let subtotal = updateSubtotal(productElement);
+    total += subtotal;
   }
-  // OR everyProduct.forEach(updateSubtotal(product)); ??
-
-
-  // ITERATION 3
-  //... your code goes here
-  // getElementsByClassName returns array -> reduce method ?!
+  let totalElement = document
+    .getElementById('total-value')
+    .querySelector('span');
+  totalElement.textContent = total;
 }
+// loop over array of .product properties, passing in updateSubtotal function
+/*   former version
+  productElements.forEach(function (oneProduct) {
+    priceEachProduct += updateSubtotal(oneProduct);
+  });     */
+
+for (const oneProduct of productElements) {
+  priceEachProduct += updateSubtotal(oneProduct);
+}
+
+// ITERATION 3
+//... your code goes here
+const valueOfAll = document.querySelector('#total-value span');
+valueOfAll.innerText = priceEachProduct.toFixed(2);
 
 // ITERATION 4
 
@@ -55,7 +69,12 @@ function removeProduct(event) {
 // ITERATION 5
 
 function createProduct() {
-  //... your code goes here
+  const productName = document.querySelector(
+    "tfoot .create-product input[type='text']"
+  ).value;
+  const productPrice = document.querySelector(
+    "tfoot .create-product input[type='number']"
+  ).value;
 }
 
 window.addEventListener('load', () => {
